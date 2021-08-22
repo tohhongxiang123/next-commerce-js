@@ -1,6 +1,6 @@
 import { Category } from '@chec/commerce.js/types/category'
 import React from 'react'
-import { CategoryList } from '../../components'
+import { CategoryList, Layout } from '../../components'
 import commerce from '../../lib/commerce'
 
 interface CategoriesPageProps {
@@ -9,10 +9,10 @@ interface CategoriesPageProps {
 
 export default function index({ categories }: CategoriesPageProps) {
     return (
-        <div>
+        <Layout title="Categories">
             <h1>Categories</h1>
             <CategoryList categories={categories} />
-        </div>
+        </Layout>
     )
 }
 

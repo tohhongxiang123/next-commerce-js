@@ -1,7 +1,7 @@
 import commerce from '../../lib/commerce'
 import { Product } from '@chec/commerce.js/types/product'
 import React from 'react'
-import { ProductList } from '../../components'
+import { Layout, ProductList } from '../../components'
 
 interface ProductsPageProps {
     products: Product[]
@@ -9,10 +9,10 @@ interface ProductsPageProps {
 
 export default function index({ products }: ProductsPageProps) {
     return (
-        <div>
+        <Layout title="Products">
             <h1>Products</h1>
             <ProductList products={products} />
-        </div>
+        </Layout>
     )
 }
 

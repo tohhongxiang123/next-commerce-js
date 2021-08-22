@@ -1,5 +1,6 @@
 import { Product } from '@chec/commerce.js/types/product';
 import { GetStaticPropsContext } from 'next';
+import { Layout } from '../../components';
 import { useCartState } from '../../context/cart';
 import commerce from "../../lib/commerce";
 
@@ -11,11 +12,11 @@ export default function Permalink({ product }: ProductPageProps) {
     const { addToCart } = useCartState()
 
     return (
-        <div>
+        <Layout title={product.name}>
             <h1>{product.name}</h1>
             <p>{product.price.formatted_with_symbol}</p>
             <button onClick={() => addToCart(product.id)}>Add to Cart</button>
-        </div>
+        </Layout>
     )
 }
 
