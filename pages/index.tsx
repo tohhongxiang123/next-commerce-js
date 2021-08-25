@@ -15,11 +15,11 @@ export default function Home({ categories, products }: HomeProps) {
 	return (
 		<Layout>
 			<div className="p-8">
-				<h2 className="text-xl font-bold"><Link href={"/categories"}><a>Categories</a></Link></h2>
+				<h2 className="text-3xl font-semibold mb-8 opacity-75"><Link href={"/categories"}><a>Categories</a></Link></h2>
 				<CategoryList categories={categories} />
 			</div>
 			<div className="p-8">
-				<h2 className="text-xl font-bold"><Link href={"/products"}><a>Products</a></Link></h2>
+				<h2 className="text-3xl font-semibold mb-8 opacity-75"><Link href={"/products"}><a>Products</a></Link></h2>
 				<ProductList products={products} />
 			</div>
 		</Layout>
