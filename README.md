@@ -1,4 +1,11 @@
-# Setting Up Dependencies
+# Setting up
+
+Create a `.env` and fill up the following
+
+-`NEXT_PUBLIC_CHEC_PUBLIC_API_KEY`
+
+
+# Tutorial
 
 ## Create a NextJS app with typescript
 

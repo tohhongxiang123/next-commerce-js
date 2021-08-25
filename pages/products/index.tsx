@@ -10,8 +10,10 @@ interface ProductsPageProps {
 export default function index({ products }: ProductsPageProps) {
     return (
         <Layout title="Products">
-            <h1>Products</h1>
-            <ProductList products={products} />
+            <div className="p-8">
+                <h1 className="text-3xl font-semibold mb-8 opacity-75">Products</h1>
+                <ProductList products={products} />
+            </div>
         </Layout>
     )
 }

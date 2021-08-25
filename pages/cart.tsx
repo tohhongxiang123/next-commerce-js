@@ -15,7 +15,7 @@ export default function CartPage() {
                 {line_items.length > 0 ? line_items.map(item => (
                     <li key={item.id}>
                         <div className="mb-4">
-                            <Image src={item.media.source} alt={item.name} width={128} height={128} />
+                            <Image src={item.media.source ? item.media.source : '/no_image_placeholder.svg'} alt={item.name} width={128} height={128} />
                             <p className="font-semibold">{item.product_name}</p>
                             <p>{item.price.formatted_with_code} * {item.quantity} = {item.line_total.formatted_with_code}</p>
                             <div>
