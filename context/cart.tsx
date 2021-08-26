@@ -16,8 +16,10 @@ export const CartStateContext = createContext<{
     cart: Cart,
     cartStatus: { status: typeof CART_STATES[keyof typeof CART_STATES], message: string },
     addToCart: (productId: Product['id'], quantity?: number, variantData?: Object) => void,
-    updateQuantity: (productId: Product['id'], updatdQuantity: number) => void,
-    refreshCart: () => void
+    updateQuantity: (productId: Product['id'], updatedQuantity: number) => void,
+    refreshCart: () => void,
+    isSidebarCartOpen: boolean,
+    toggleSidebarCart: () => void
 }>(null as any)
 
 export const useCartState = () => useContext(CartStateContext)
@@ -42,6 +44,7 @@ export const CartProvider = ({ children }: any) => {
             .then(({ cart }) => {
                 setCart(oldCart => ({ ...oldCart, ...cart }))
                 setCartStatus(c => ({ message: 'Added product to cart!', status: CART_STATES.SUCCESS }))
+                setIsSidebarCartOpen(true)
             })
             .catch(err => setCartStatus(c => ({ message: `Failed to add to cart: ${err.message}`, status: CART_STATES.ERROR }))) // display toast
     }
@@ -78,8 +81,11 @@ export const CartProvider = ({ children }: any) => {
         return () => timeoutHandler && clearTimeout(timeoutHandler)
     }, [cartStatus.status])
 
+    const [isSidebarCartOpen, setIsSidebarCartOpen] = useState(false)
+    const toggleSidebarCart = () => setIsSidebarCartOpen(c => !c)
+
     return (
-        <CartStateContext.Provider value={{ cart, addToCart, updateQuantity, refreshCart, cartStatus }}>
+        <CartStateContext.Provider value={{ cart, addToCart, updateQuantity, refreshCart, cartStatus, toggleSidebarCart, isSidebarCartOpen }}>
             {children}
         </CartStateContext.Provider>
     )
