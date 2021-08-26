@@ -2,7 +2,7 @@ import { Categories } from '@chec/commerce.js/features/categories';
 import { Product } from '@chec/commerce.js/types/product';
 import { GetStaticPropsContext } from 'next';
 import { Layout } from '../../components';
-import { useCartState } from '../../context/cart';
+import { CART_STATES, useCartState } from '../../context/cart';
 import commerce from "../../lib/commerce";
 import Link from 'next/link'
 import { useEffect, useState } from 'react';
@@ -28,13 +28,10 @@ export default function Permalink({ product }: ProductPageProps) {
 
     const [variantSelections, setVariantSelections] = useState(Object.fromEntries(product.variant_groups.map(group => [group.id, group.options[0].id])))
 
-    const [isLoading, setIsLoading] = useState(false)
-    const { addToCart } = useCartState()
+    const { addToCart, cartStatus } = useCartState()
     const handleAddToCart = async () => {
         if (!isValidQuantity) return
-        setIsLoading(true)
-        await addToCart(product.id, quantity, variantSelections)
-        setIsLoading(false)
+        addToCart(product.id, quantity, variantSelections)
     }
 
     return (
@@ -69,7 +66,7 @@ export default function Permalink({ product }: ProductPageProps) {
                                                 {group.options.map(option => <option key={option.id} value={option.id}>{option.name} {option.price.raw !== 0 && `(${option.price.raw > 0 ? '+' : ''}${option.price.formatted_with_code})`}</option>)}
                                             </select>
                                             <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4" viewBox="0 0 24 24">
+                                                <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4" viewBox="0 0 24 24">
                                                     <path d="M6 9l6 6 6-6"></path>
                                                 </svg>
                                             </span>
@@ -86,9 +83,9 @@ export default function Permalink({ product }: ProductPageProps) {
                             </div>
                             <div className="flex items-baseline gap-x-4">
                                 <span className="title-font font-medium text-2xl text-gray-900">${currentPrice}</span>
-                                <button className={`flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded ${!isValidQuantity || isLoading && "pointer-events-none opacity-50"}`}
-                                    onClick={handleAddToCart} disabled={!isValidQuantity || isLoading}
-                                >{isLoading ? "Loading" : "Add to Cart"}
+                                <button className={`flex ml-auto text-white font-medium bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded ${(!isValidQuantity || cartStatus.status === CART_STATES.LOADING) && "pointer-events-none opacity-50"}`}
+                                    onClick={handleAddToCart} disabled={!isValidQuantity || cartStatus.status === CART_STATES.LOADING || cartStatus.status === CART_STATES.SUCCESS}
+                                >{cartStatus.status !== CART_STATES.IDLE ? cartStatus.message : "Add to Cart"}
                                 </button>
                             </div>
                         </div>
