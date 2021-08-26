@@ -3,6 +3,8 @@ import type { AppProps /*, AppContext */ } from 'next/app'
 import { CartProvider } from '../context/cart'
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import 'react-image-lightbox/style.css';
 import 'tailwindcss/tailwind.css'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_API_KEY as string);
