@@ -55,9 +55,9 @@ export default function Navbar() {
                         <div className="hidden sm:block sm:ml-6">
                             <div className="flex space-x-4">
                                 {links.map(link => link.isActive ? (
-                                    <Link href={link.link}><a className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">{link.name}</a></Link>
+                                    <Link href={link.link} key={link.link}><a className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">{link.name}</a></Link>
                                 ) : (
-                                    <Link href={link.link}><a className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{link.name}</a></Link>
+                                    <Link href={link.link} key={link.link}><a className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">{link.name}</a></Link>
                                 ))}
                             </div>
                         </div>
@@ -88,9 +88,9 @@ export default function Navbar() {
             {isMobileNavbarOpen && <div className="sm:hidden" id="mobile-menu">
                 <div className="px-2 pt-2 pb-3 space-y-1">
                     {links.map(link => link.isActive ? (
-                        <Link href={link.link}><a className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">{link.name}</a></Link>
+                        <Link href={link.link} key={link.link}><a className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">{link.name}</a></Link>
                     ) : (
-                        <Link href={link.link}><a className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{link.name}</a></Link>
+                        <Link href={link.link} key={link.link}><a className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">{link.name}</a></Link>
                     ))}
                 </div>
             </div>}

@@ -1,6 +1,6 @@
 import React from 'react'
 import commerce from "../../lib/commerce";
-import { ProductList } from "../../components";
+import { Layout, ProductList } from "../../components";
 import { GetStaticPropsContext } from 'next';
 import { Category } from '@chec/commerce.js/types/category';
 import { Product } from '@chec/commerce.js/types/product';
@@ -12,10 +12,12 @@ interface CategoriesSlugProps {
 
 export default function slug({ category, products }: CategoriesSlugProps) {
     return (
-        <div>
-            <h1>Category - {category.name}</h1>
-            <ProductList products={products} />
-        </div>
+        <Layout title={category.name}>
+            <div className="p-4">
+                <h1 className="text-3xl font-semibold mb-8 opacity-75">{category.name} <small>({category.products} {category.products === 1 ? "product" : "products"})</small></h1>
+                <ProductList products={products} />
+            </div>
+        </Layout>
     )
 }
 

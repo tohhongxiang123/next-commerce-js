@@ -10,8 +10,10 @@ interface CategoriesPageProps {
 export default function index({ categories }: CategoriesPageProps) {
     return (
         <Layout title="Categories">
-            <h1>Categories</h1>
-            <CategoryList categories={categories} />
+            <div className="p-4">
+                <h1 className="text-3xl font-semibold mb-8 opacity-75">Categories</h1>
+                <CategoryList categories={categories} />
+            </div>
         </Layout>
     )
 }
