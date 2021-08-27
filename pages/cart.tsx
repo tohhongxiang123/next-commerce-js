@@ -1,36 +1,35 @@
-import { useCartState } from "../context/cart"
-import Image from 'next/image'
+import { CART_STATES, useCartState } from "../context/cart"
 import Link from "next/link"
+import { CartItem, Layout } from "../components"
 
 export default function CartPage() {
-    const { cart, updateQuantity } = useCartState()
+    const { cart, refreshCart, cartStatus } = useCartState()
     const isEmptyCart = JSON.stringify(cart) === "{}"
 
     if (isEmptyCart) return <p>Loading...</p>
-    const { line_items, subtotal } = cart
+
+    const { line_items, subtotal, hosted_checkout_url } = cart
     return (
-        <div>
-            <h1>Cart</h1>
-            <ul>
+        <Layout title="Cart">
+            <h1 className="text-3xl font-semibold text-center m-4 opacity-80">Cart</h1>
+            <ul className="max-w-xl mx-auto">
                 {line_items.length > 0 ? line_items.map(item => (
                     <li key={item.id}>
-                        <div className="mb-4">
-                            <Image src={item.media.source ? item.media.source : '/no_image_placeholder.svg'} alt={item.name} width={128} height={128} />
-                            <p className="font-semibold">{item.product_name}</p>
-                            <p>{item.price.formatted_with_code} * {item.quantity} = {item.line_total.formatted_with_code}</p>
-                            <div>
-                                <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
-                                <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
-                                <button onClick={() => updateQuantity(item.id, 0)}>x</button>
-                            </div>
-                        </div>
+                        <CartItem item={item} />
                     </li>
                 )) : (
                     <p>Empty cart</p>
                 )}
-                <p>Sub total: {subtotal.formatted_with_code}</p>
-                {line_items.length > 0 && <Link href="/checkout"><a>Check out</a></Link>}
+                <div className="p-4 border-t-2 border-gray-300 mx-4">
+                    <p className="font-semibold text-center">Subtotal: <span className="text-2xl">{subtotal.formatted_with_code}</span></p>
+                    <a href={hosted_checkout_url} className={`block text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-4 mb-2 ${cartStatus.status === CART_STATES.LOADING ? 'pointer-events-none opacity-50' : ''}`}>
+                        {cartStatus.status === CART_STATES.LOADING ? cartStatus.message : "Checkout"}
+                    </a>
+                    <div className="flex justify-center">
+                        {line_items.length > 0 && <button className="text-md opacity-75 hover:underline" onClick={refreshCart} disabled={cartStatus.status === CART_STATES.LOADING}>Clear cart</button>}
+                    </div>
+                </div>
             </ul>
-        </div>
+        </Layout>
     )
 }
