@@ -35,7 +35,7 @@ export default function Permalink({ product }: ProductPageProps) {
         addToCart(product.id, quantity, variantSelections)
     }
 
-    const productImages = product.assets.map(asset => asset.url)
+    const productImages = product.assets.length > 0 ? product.assets.map(asset => asset.url) : ['/no_image_placeholder.svg']
     const [photoIndex, setPhotoIndex] = useState(0)
     const [isOpen, setIsOpen] = useState(false)
     return (
