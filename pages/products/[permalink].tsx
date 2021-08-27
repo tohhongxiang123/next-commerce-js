@@ -15,6 +15,11 @@ interface ProductPageProps {
 const MINIMUM_QUANTITY = 1
 export default function Permalink({ product }: ProductPageProps) {
     const [currentPrice, setCurrentPrice] = useState(product.price.raw)
+    const [variantSelections, setVariantSelections] = useState(Object.fromEntries(product.variant_groups.map(group => [group.id, group.options[0].id])))
+
+    const [quantity, setQuantity] = useState(MINIMUM_QUANTITY)
+    const isValidQuantity = !Number.isNaN(quantity)
+
     useEffect(() => {
         if (Number.isNaN(quantity)) return
         let finalPrice = product.price.raw
@@ -22,12 +27,8 @@ export default function Permalink({ product }: ProductPageProps) {
             finalPrice += product.variant_groups.find(group => group.id === category)!.options.find(option => option.id === value)!.price.raw
         }
         setCurrentPrice(finalPrice * quantity)
-    })
+    }, [quantity, product.price.raw, product.variant_groups, variantSelections])
 
-    const [quantity, setQuantity] = useState(MINIMUM_QUANTITY)
-    const isValidQuantity = !Number.isNaN(quantity)
-
-    const [variantSelections, setVariantSelections] = useState(Object.fromEntries(product.variant_groups.map(group => [group.id, group.options[0].id])))
 
     const { addToCart, cartStatus } = useCartState()
     const handleAddToCart = async () => {
@@ -38,11 +39,12 @@ export default function Permalink({ product }: ProductPageProps) {
     const productImages = product.assets.length > 0 ? product.assets.map(asset => asset.url) : ['/no_image_placeholder.svg']
     const [photoIndex, setPhotoIndex] = useState(0)
     const [isOpen, setIsOpen] = useState(false)
+    const handleCarouselChange = (index: number) => setPhotoIndex(index)
     return (
         <Layout title={product.name}>
             <div className="lg:flex lg:flex-row justify-center mb-8 lg:p-16">
                 <div className="p-4 max-w-xl mx-auto lg:mx-0 lg:sticky top-0 self-start">
-                    <Carousel showStatus={false} showIndicators={false} autoPlay={false} showThumbs={productImages.length > 1} infiniteLoop dynamicHeight
+                    <Carousel onChange={handleCarouselChange} showStatus={false} showIndicators={false} autoPlay={false} showThumbs={productImages.length > 1} infiniteLoop dynamicHeight
                         renderArrowPrev={(onClickHandler, hasPrev, label) =>
                             hasPrev && (
                                 <button type="button" onClick={onClickHandler} title={label} style={{ zIndex: 1 }} className="absolute left-0 top-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full text-bold text-xl flex items-center justify-center">
@@ -74,7 +76,7 @@ export default function Permalink({ product }: ProductPageProps) {
                 <div className="p-4 max-w-xl sticky top-0 flex flex-col mx-auto lg:mx-0 self-start">
                     <div className="flex gap-x-4 gap-y-2">
                         {product.categories.map(category => (
-                            <h2 className="text-sm title-font text-gray-500 tracking-widest">
+                            <h2 key={category.id} className="text-sm title-font text-gray-500 tracking-widest">
                                 <Link href={`/categories/${category.slug}`}>
                                     <a>
                                         {category.name.toUpperCase()}
@@ -87,7 +89,7 @@ export default function Permalink({ product }: ProductPageProps) {
                     <div className="leading-relaxed prose text-gray-500 " dangerouslySetInnerHTML={{ __html: product.description }} />
                     <div className="flex flex-wrap gap-4 mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                         {product.variant_groups.map(group => (
-                            <div className="flex flex-col">
+                            <div className="flex flex-col" key={group.id}>
                                 <label className="mr-3 font-medium" htmlFor={group.id}>{group.name}</label>
                                 <div className="relative">
                                     <select id={group.id} value={variantSelections[group.name]} onChange={e => setVariantSelections(c => ({ ...c, [group.id]: e.target.value }))} className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">

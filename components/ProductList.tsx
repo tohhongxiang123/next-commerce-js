@@ -12,7 +12,7 @@ export default function ProductList({ products = [] }: ProductListProps) {
         <div>
             <ul className="flex flex-wrap gap-8 w-full">
                 {products.map(product => (
-                    <li key={product.id} className="lg:w-1/4 md:w-1/2 p-4 w-full shadow-sm rounded-sm">
+                    <li key={product.id} className="lg:w-1/4 md:w-1/2 w-full shadow-sm rounded-sm">
                         <DisplayProduct {...product} />
                     </li>
                 ))}
