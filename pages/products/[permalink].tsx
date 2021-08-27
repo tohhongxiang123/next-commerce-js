@@ -35,7 +35,6 @@ export default function Permalink({ product }: ProductPageProps) {
         addToCart(product.id, quantity, variantSelections)
     }
 
-    console.log(product)
     const productImages = product.assets.map(asset => asset.url)
     const [photoIndex, setPhotoIndex] = useState(0)
     const [isOpen, setIsOpen] = useState(false)
