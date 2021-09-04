@@ -6,7 +6,8 @@ import Layout from './Layout'
 import Navbar from './Navbar'
 import CartItem from './SideBarCart/CartItem'
 import SideBarCart from './SideBarCart'
+import Pagination from './Pagination'
 
 export {
-    ProductList, CategoryList, DisplayProduct, DisplayCategory, Layout, Navbar, CartItem, SideBarCart
+    ProductList, CategoryList, DisplayProduct, DisplayCategory, Layout, Navbar, CartItem, SideBarCart, Pagination
 }

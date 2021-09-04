@@ -1,11 +1,15 @@
 import { Product } from "@chec/commerce.js/types/product";
 import Link from 'next/link'
 
+interface DisplayProductProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+    product: Product
+}
+
 const MAX_SHOWN_CATEGORIES = 5
-export default function DisplayProduct({ id, permalink, name, description, price, categories, ...props }: Product) {
-    const coverImage = props.assets[0]
+export default function DisplayProduct({ product: { id, permalink, name, description, price, categories, assets }, ...props }: DisplayProductProps) {
+    const coverImage = assets[0]
     return (
-        <div className="p-4 w-full h-full">
+        <div className={`p-4 w-full h-full ${props.className ?? ''}`}>
             <Link href={`/products/${permalink}`}>
                 <a className="block relative h-48 rounded overflow-hidden">
                     <img className="object-cover object-center w-full h-full block" src={coverImage ? coverImage.url : '/no_image_placeholder.svg'} alt={coverImage ? coverImage.filename : name} />

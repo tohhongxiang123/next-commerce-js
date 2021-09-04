@@ -2,7 +2,12 @@
 
 Create a `.env` and fill up the following
 
--`NEXT_PUBLIC_CHEC_PUBLIC_API_KEY`
+- `NEXT_PUBLIC_CHEC_PUBLIC_API_KEY` - commerce js public api key
+- `NEXT_PUBLIC_STRIPE_PUBLIC_API_KEY` - stripe public api key
+- `NEXT_PUBLIC_ALGOLIA_APPLICATION_ID` - algolia application id
+- `NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY` - algolia search only api key
+- `NEXT_PUBLIC_ALGOLIA_INDEX` - name of algolia index
+- `ALGOLIA_ADMIN_API_KEY` - algolia admin api key
 
 
 # Tutorial
