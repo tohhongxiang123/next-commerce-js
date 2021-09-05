@@ -9,13 +9,17 @@ interface ProductListProps {
 export default function ProductList({ products = [] }: ProductListProps) {
     return (
         <div>
-            <ul className="flex flex-wrap gap-8 w-full">
+            {products.length > 0 ? (
+            <ul className="flex flex-wrap justify-center gap-8 w-full p-4">
                 {products.map(product => (
-                    <li key={product.id} className="lg:w-1/4 md:w-1/2 w-full shadow-sm rounded-sm">
+                    <li key={product.id} className="lg:w-1/4 md:w-1/3 w-full shadow-sm rounded-sm">
                         <DisplayProduct product={product} />
                     </li>
                 ))}
             </ul>
+            ) : (
+               <p className="text-center text-lg font-medium opacity-50 py-16 px-4"><i>No products found...</i></p>
+            )}
         </div>
     )
 }

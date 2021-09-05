@@ -1,42 +1,42 @@
-import commerce from '../../lib/commerce'
-import { Product } from '@chec/commerce.js/types/product'
 import React from 'react'
 import {
-    DisplayProduct,
     Layout,
+    ProductList,
 } from '../../components'
-import { GetServerSidePropsContext } from 'next'
-import { PaginationMeta } from '@chec/commerce.js/types/pagination'
 import algoliasearch from 'algoliasearch/lite';
 import {
     InstantSearch,
-    Hits,
     SearchBox,
-    RefinementList,
     Pagination,
-    Highlight,
     HitsPerPage,
+    connectHits,
 } from 'react-instantsearch-dom';
+import { useRouter } from 'next/router'
 
 const searchClient = algoliasearch(
     process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID as string,
     process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY as string,
 );
 
-interface ProductsPageProps {
-    products: Product[],
-    pagination: PaginationMeta['pagination']
-}
+export default function index() {
+    const router = useRouter()
 
-export default function index({ products, pagination }: ProductsPageProps) {
-    const handleSubmitQuery = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+    const handleSearchStateChange = ({ query, page }: any) => {
+        const queryObject = { page } as any
+
+        if (query) {
+            queryObject.search = query
+        }
+        router.push({ query: queryObject })
     }
 
     return (
         <Layout title="Products">
             <div>
-                <InstantSearch searchClient={searchClient} indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX as string} >
+                <InstantSearch searchClient={searchClient} indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX as string} 
+                    searchState={{ query: router.query.search ?? "", page: router.query.page ?? 1 }}
+                    onSearchStateChange={handleSearchStateChange}
+                >
                     <div className="flex justify-between p-4">
                         <h1 className="text-3xl font-semibold opacity-75">Products</h1>
                         <SearchBox
@@ -44,11 +44,10 @@ export default function index({ products, pagination }: ProductsPageProps) {
                             translations={{
                                 placeholder: 'Search',
                             }}
-                            onSubmit={handleSubmitQuery}
-                            showLoadingIndicator
+                            searchAsYouType={false}
                         />
                     </div>
-                    <Hits hitComponent={({ hit }) => <DisplayProduct product={hit as any} />} />
+                    <ConnectedHitsComponent />
                     <div className="flex justify-end gap-x-8 p-4">
                         <HitsPerPage defaultRefinement={2} items={[
                             { value: 2, label: 'Limit to 2 items per page' },
@@ -56,7 +55,7 @@ export default function index({ products, pagination }: ProductsPageProps) {
                             { value: 50, label: 'Limit to 50 items per page' },
                             { value: 100, label: 'Limit to 100 items per page' },
                         ]} />
-                        <Pagination />
+                        <Pagination showLast default />
                     </div>
                 </InstantSearch>
             </div>
@@ -64,12 +63,4 @@ export default function index({ products, pagination }: ProductsPageProps) {
     )
 }
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-    const { data: products, meta: { pagination } } = await commerce.products.list()
-
-    return {
-        props: {
-            products, pagination
-        }
-    }
-}
+const ConnectedHitsComponent = connectHits(({ hits = [] }) => <ProductList products={hits as any} />)
