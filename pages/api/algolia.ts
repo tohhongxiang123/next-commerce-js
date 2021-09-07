@@ -16,7 +16,7 @@ const algoliaHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     if (["create", "update"].includes(eventType)) {
-        await index.saveObject({ objectID, ...product })
+        await index.saveObject({ objectID, id: objectID, ...product })
         return res.status(200).send({ success: true })
     }
 

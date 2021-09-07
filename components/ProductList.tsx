@@ -10,7 +10,7 @@ export default function ProductList({ products = [] }: ProductListProps) {
     return (
         <div>
             {products.length > 0 ? (
-            <ul className="flex flex-wrap justify-center gap-8 w-full p-4">
+            <ul className="flex flex-wrap justify-center gap-8">
                 {products.map(product => (
                     <li key={product.id} className="lg:w-1/4 md:w-1/3 w-full shadow-sm rounded-sm">
                         <DisplayProduct product={product} />
