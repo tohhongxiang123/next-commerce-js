@@ -11,6 +11,7 @@ import {
     HitsPerPage,
     connectHits,
     RefinementList,
+    connectRefinementList,
 } from 'react-instantsearch-dom';
 import { useRouter } from 'next/router'
 import { Product } from '@chec/commerce.js/types/product';
@@ -42,32 +43,37 @@ export default function index() {
 
     return (
         <Layout title="Products">
-            <div>
+            <div className="h-full overflow-hidden flex flex-col">
                 <InstantSearch searchClient={searchClient} indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX as string}
                     searchState={searchState}
                     onSearchStateChange={handleSearchStateChange}
                 >
-                    <div className="flex justify-between p-4">
+                    <div className="flex justify-between items-center p-4">
                         <h1 className="text-3xl font-semibold opacity-75">Products</h1>
                         <SearchBox
-                            className="searchbox"
+                            className="form-input"
                             translations={{
                                 placeholder: 'Search',
                             }}
                             searchAsYouType={false}
                         />
                     </div>
-                    <div>
-                        <RefinementList attribute={FILTER_ATTRIBUTE} on />
-                    </div>
-                    <ConnectedHitsComponent />
-                    <div className="flex justify-end gap-x-8 p-4">
-                        <HitsPerPage defaultRefinement={20} items={[
-                            { value: 20, label: 'Limit to 20 items per page' },
-                            { value: 50, label: 'Limit to 50 items per page' },
-                            { value: 100, label: 'Limit to 100 items per page' },
-                        ]} />
-                        <Pagination showLast default />
+                    <div className="flex h-full overflow-hidden">
+                        <div className="flex-shrink-0 pt-4 pl-2 pr-8 overflow-auto">
+                            <ConnectedRefinementListComponent attribute={FILTER_ATTRIBUTE} />
+                        </div>
+                        <div className="flex-grow overflow-auto">
+                            <ConnectedHitsComponent />
+                            <div className="flex justify-end gap-x-8 p-4">
+                                <HitsPerPage defaultRefinement={20} items={[
+                                    { value: 2, label: 'Limit to 2 items per page' },
+                                    { value: 20, label: 'Limit to 20 items per page' },
+                                    { value: 50, label: 'Limit to 50 items per page' },
+                                    { value: 100, label: 'Limit to 100 items per page' },
+                                ]} />
+                                <Pagination showLast default />
+                            </div>
+                        </div>
                     </div>
                 </InstantSearch>
             </div>
@@ -76,3 +82,18 @@ export default function index() {
 }
 
 const ConnectedHitsComponent = connectHits(({ hits = [] }) => <ProductList products={hits as any} />)
+
+const ConnectedRefinementListComponent = connectRefinementList(({ canRefine, createURL, currentRefinement, isFromSearch, items, refine }) => (
+    <>
+        <ul>
+            {items.map(item => (
+                <li className="px-2 mb-2">
+                    <label className="inline-flex gap-x-2 items-center">
+                        <input type="checkbox" className="form-checkbox rounded border border-gray-400" checked={item.isRefined} value={item.value} onChange={e => refine(item.value)} />
+                        <span>{item.label} - {item.count}</span>
+                    </label>
+                </li>
+            ))}
+        </ul>
+    </>
+))

@@ -5,7 +5,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import 'react-image-lightbox/style.css';
-import 'tailwindcss/tailwind.css'
+import '../styles/globals.css'
 import '../styles/algolia-overrides.css'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_API_KEY as string);

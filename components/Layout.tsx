@@ -8,14 +8,16 @@ interface LayoutProps {
 
 export default function Layout({ children, title = 'Home' }: LayoutProps) {
     return (
-        <div>
+        <div className="h-screen flex flex-col">
             <Head>
                 <title>{title}</title>
             </Head>
-            <Navbar />
-            <>
+            <div className="flex-shrink-0">
+                <Navbar />
+            </div>
+            <div className="flex-grow h-full overflow-auto">
                 {children}
-            </>
+            </div>
         </div>
     )
 }
