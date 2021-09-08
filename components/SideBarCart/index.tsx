@@ -32,7 +32,7 @@ export default function SidebarCart() {
                             {cartStatus.status === CART_STATES.LOADING ? cartStatus.message : "Checkout"}
                         </a>
                         <div className="flex justify-between">
-                            <Link href={'/cart'}><a className="text-md opacity-75 hover:underline">View detailed cart</a></Link>
+                            <Link href={'/cart'}><a className="text-md opacity-75 hover:underline" onClick={toggleSidebarCart}>View detailed cart</a></Link>
                             {line_items.length > 0 && <button className="text-md opacity-75 hover:underline" onClick={refreshCart} disabled={cartStatus.status === CART_STATES.LOADING}>Clear cart</button>}
                         </div>
                     </div>

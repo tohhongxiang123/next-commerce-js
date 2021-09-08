@@ -18,7 +18,7 @@ export default function CartPage() {
                         <CartItem item={item} />
                     </li>
                 )) : (
-                    <p>Empty cart</p>
+                    <p className="text-center text-lg opacity-60 mb-4 font-medium"><i>No items in cart...</i></p>
                 )}
                 <div className="p-4 border-t-2 border-gray-300 mx-4">
                     <p className="font-semibold text-center">Subtotal: <span className="text-2xl">{subtotal.formatted_with_code}</span></p>
