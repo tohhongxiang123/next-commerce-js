@@ -10,12 +10,9 @@ import {
     Pagination,
     HitsPerPage,
     connectHits,
-    RefinementList,
     connectRefinementList,
 } from 'react-instantsearch-dom';
 import { useRouter } from 'next/router'
-import { Product } from '@chec/commerce.js/types/product';
-import { Category } from '@chec/commerce.js/types/category';
 
 const searchClient = algoliasearch(
     process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID as string,
@@ -23,6 +20,7 @@ const searchClient = algoliasearch(
 );
 
 const FILTER_ATTRIBUTE = 'categories.name'
+const INDEX_NAME = 'products'
 export default function index() {
     const router = useRouter()
 
@@ -44,7 +42,7 @@ export default function index() {
     return (
         <Layout title="Products">
             <div className="h-full overflow-hidden flex flex-col">
-                <InstantSearch searchClient={searchClient} indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX as string}
+                <InstantSearch searchClient={searchClient} indexName={INDEX_NAME}
                     searchState={searchState}
                     onSearchStateChange={handleSearchStateChange}
                 >

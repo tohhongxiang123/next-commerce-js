@@ -6,8 +6,11 @@ Create a `.env` and fill up the following
 - `NEXT_PUBLIC_STRIPE_PUBLIC_API_KEY` - stripe public api key
 - `NEXT_PUBLIC_ALGOLIA_APPLICATION_ID` - algolia application id
 - `NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY` - algolia search only api key
-- `NEXT_PUBLIC_ALGOLIA_INDEX` - name of algolia index
 - `ALGOLIA_ADMIN_API_KEY` - algolia admin api key
+
+In algolia, you must create 2 indices named as follows:
+- `products` - list of products
+- `categories` - list of categories
 
 
 # Tutorial
